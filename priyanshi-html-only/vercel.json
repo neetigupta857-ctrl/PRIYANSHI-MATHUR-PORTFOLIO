@@ -4,6 +4,5 @@
   "framework": null,
   "installCommand": "",
   "buildCommand": "",
-  "outputDirectory": ".",
-  "public": true
+  "outputDirectory": "."
 }
