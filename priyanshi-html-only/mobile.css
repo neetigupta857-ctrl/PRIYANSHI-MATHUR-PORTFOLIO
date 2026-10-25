@@ -200,8 +200,6 @@
   .case-info { padding-left: 19px !important; padding-right: 19px !important; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  @media screen and (max-width: 767px) {
-    *, *::before, *::after { scroll-behavior: auto !important; }
-  }
+@media (prefers-reduced-motion: reduce) and (max-width: 767px) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
 }
