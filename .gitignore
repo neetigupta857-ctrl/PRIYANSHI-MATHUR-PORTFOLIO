@@ -1,0 +1,11 @@
+node_modules/
+**/node_modules/
+**/RENDERS_ORIGINAL_BACKUP/
+.DS_Store
+*.zip
+*.rar
+*.psd
+*.pdf
+*.bak
+*PERFECT_FIXED*
+*FINAL_WORKING*

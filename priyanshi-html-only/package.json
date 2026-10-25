@@ -1,0 +1,34 @@
+{
+  "name": "priyanshi-mathur-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio of Priyanshi Mathur - Interior Design & Architectural Visualisation",
+  "main": "serve.js",
+  "scripts": {
+    "start": "node serve.js",
+    "serve": "node serve.js"
+  },
+  "keywords": [
+    "portfolio",
+    "interior-design",
+    "architectural-visualisation"
+  ],
+  "author": "Priyanshi Mathur",
+  "license": "ISC",
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^14.6.0",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.27",
+    "lucide-react": "^1.61.0",
+    "next": "^16.4.3",
+    "ogl": "^1.0.11",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}
