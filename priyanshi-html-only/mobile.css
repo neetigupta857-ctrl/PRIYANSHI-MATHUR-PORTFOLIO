@@ -1,0 +1,518 @@
+/*
+ * Phone-only layout for Priyanshi Mathur's portfolio.
+ * Loaded only at widths <= 767px. Desktop styling and behaviour are left alone.
+ */
+@media screen and (max-width: 767px) {
+  :root {
+    --topbar-height: 66px;
+  }
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  #app {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  img,
+  video,
+  svg {
+    max-width: 100%;
+  }
+
+  /* Compact phone header; keep the existing drawer/menu functionality. */
+  .topbar {
+    height: 66px !important;
+    min-height: 66px !important;
+    padding: 0 17px !important;
+    gap: 10px;
+  }
+
+  .brand-block {
+    min-width: 0;
+    max-width: calc(100vw - 92px);
+  }
+
+  .brand-line-1 {
+    font-size: clamp(.82rem, 4.1vw, 1rem) !important;
+    line-height: 1.25;
+    letter-spacing: .035em !important;
+    white-space: nowrap;
+  }
+
+  .brand-line-2 {
+    font-size: .54rem !important;
+    line-height: 1.35;
+    letter-spacing: .115em !important;
+    white-space: nowrap;
+  }
+
+  .brand-line-3 {
+    display: none !important;
+  }
+
+  .topbar-actions {
+    flex: 0 0 auto;
+    gap: 8px !important;
+  }
+
+  .topbar-download-btn {
+    display: none !important;
+  }
+
+  .menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 44px !important;
+    min-width: 44px;
+    height: 44px !important;
+    padding: 10px !important;
+  }
+
+  .menu-btn-burger {
+    width: 23px !important;
+  }
+
+  .curved-menu-drawer {
+    width: min(88vw, 390px) !important;
+    max-width: 90vw !important;
+  }
+
+  .curved-menu-content {
+    max-width: 100%;
+  }
+
+  /* A focused, editorial cover on small screens. */
+  #pdfCover,
+  .pdf-cover,
+  .hero-editorial-frame {
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 620px !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    overflow: hidden;
+  }
+
+  .hero-bg-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: 61% center !important;
+  }
+
+  .hero-editorial-overlay {
+    background: linear-gradient(
+      90deg,
+      rgba(15, 10, 10, .58) 0%,
+      rgba(15, 10, 10, .28) 58%,
+      rgba(15, 10, 10, .08) 100%
+    ) !important;
+  }
+
+  .hero-content-panel {
+    top: auto !important;
+    right: auto !important;
+    bottom: clamp(36px, 7vh, 64px) !important;
+    left: 6vw !important;
+    width: 88vw !important;
+    max-width: 560px;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+    text-align: left !important;
+  }
+
+  .hero-kicker-row {
+    max-width: 100%;
+    margin-bottom: 14px;
+  }
+
+  .hero-overline {
+    display: block;
+    max-width: 100%;
+    font-size: .59rem !important;
+    line-height: 1.65 !important;
+    letter-spacing: .15em !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-title {
+    max-width: 100%;
+    margin: 0 !important;
+  }
+
+  .hero-title-line {
+    font-size: clamp(3.45rem, 17.8vw, 5.1rem) !important;
+    line-height: .83 !important;
+    letter-spacing: -.025em !important;
+    white-space: nowrap;
+  }
+
+  .hero-subtitle {
+    margin-top: 12px !important;
+    margin-bottom: 23px !important;
+    font-size: clamp(1.9rem, 9vw, 2.5rem) !important;
+    line-height: 1 !important;
+  }
+
+  .hero-action {
+    max-width: 100%;
+  }
+
+  .hero-btn,
+  .split-btn-charcoal,
+  .split-btn-glass {
+    min-height: 46px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-btn {
+    gap: 14px !important;
+    padding: 13px 16px !important;
+    font-size: .62rem !important;
+    letter-spacing: .11em !important;
+  }
+
+  /* The two discipline panels become deliberate, full-width story cards. */
+  #aboutTeaser,
+  .split-slide-section {
+    width: 100%;
+    min-height: 0 !important;
+  }
+
+  .split-columns-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    gap: 0 !important;
+  }
+
+  .split-panel-left,
+  .split-panel-right {
+    position: relative;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-height: 68svh !important;
+    padding: 4.75rem 1.35rem 3rem !important;
+    box-sizing: border-box;
+    justify-content: flex-end !important;
+  }
+
+  .split-panel-left .split-left-content,
+  .split-panel-right .split-right-content {
+    width: 100% !important;
+    max-width: 34rem !important;
+  }
+
+  .split-panel-left .split-overline,
+  .split-panel-right .split-overline {
+    margin-bottom: .85rem !important;
+    font-size: .62rem !important;
+    letter-spacing: .16em !important;
+    line-height: 1.6;
+  }
+
+  .split-panel-left .split-headline,
+  .split-panel-right .split-headline {
+    max-width: 100% !important;
+    margin-bottom: 1.55rem !important;
+    font-size: clamp(2.05rem, 8.6vw, 2.7rem) !important;
+    line-height: 1.04 !important;
+    letter-spacing: -.015em;
+  }
+
+  .split-panel-left .split-body,
+  .split-panel-right .split-body {
+    max-width: 100% !important;
+    font-size: .94rem !important;
+    line-height: 1.65 !important;
+    margin: 0 0 1.6rem !important;
+  }
+
+  .split-panel-left .split-bg-img,
+  .split-panel-right .split-bg-img {
+    object-position: center !important;
+  }
+
+  .bending-marquee-section {
+    padding: .85rem 0 !important;
+  }
+
+  .bm-item {
+    font-size: .67rem !important;
+    letter-spacing: .12em !important;
+  }
+
+  .bending-marquee-group {
+    gap: 1.1rem !important;
+    padding-right: 1.1rem !important;
+  }
+
+  /* About and contact sections use comfortable phone gutters. */
+  .about-intro-section {
+    width: 100%;
+    min-height: 0 !important;
+    padding: 4rem 1.25rem !important;
+  }
+
+  .about-intro-section > * {
+    max-width: 100%;
+  }
+
+  #contactSlideSection,
+  .contact-slide-section {
+    width: 100%;
+    min-height: 0 !important;
+    padding: 4rem 1.25rem 2.5rem !important;
+    gap: 2.5rem;
+    box-sizing: border-box;
+  }
+
+  .contact-slide-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 2.75rem !important;
+  }
+
+  .contact-slide-left,
+  .contact-slide-right {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .contact-slide-headline {
+    font-size: clamp(2rem, 8.8vw, 2.7rem) !important;
+    line-height: 1.05 !important;
+    overflow-wrap: break-word;
+  }
+
+  .contact-slide-description {
+    font-size: .95rem;
+    line-height: 1.7;
+  }
+
+  .contact-details-list,
+  .contact-detail-item,
+  .contact-text-block {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .contact-detail-item {
+    gap: 12px;
+  }
+
+  .contact-value {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  #siteFooter {
+    padding: 2.2rem 1.25rem 1.35rem !important;
+    box-sizing: border-box;
+  }
+
+  .footer-top,
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1.25rem !important;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 14px 20px;
+  }
+
+  /* Page templates that are rendered after Home (About, Visualisation,
+     Interior Design, CV/Portfolio and project detail pages). */
+  #view {
+    width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  .monograph-page-article {
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 88px 0 38px !important;
+    overflow-x: clip;
+  }
+
+  .monograph-page-header {
+    width: 100%;
+    max-width: 100% !important;
+    margin: 0 auto 1.35rem !important;
+    padding: 0 1.15rem !important;
+  }
+
+  .monograph-page-body {
+    width: 100%;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 1.15rem !important;
+  }
+
+  .monograph-filter-band {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .monograph-interior-article .chroma-grid {
+    --chroma-cols: 1 !important;
+    --chroma-min: 0px !important;
+    --chroma-gap: 14px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .monograph-interior-article .chroma-grid-inner {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .monograph-interior-article .chroma-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+  }
+
+  .monograph-interior-article .chroma-mono,
+  .monograph-interior-article .chroma-color,
+  .monograph-interior-article .chroma-wash,
+  .monograph-interior-article .chroma-card-glow {
+    max-width: 100%;
+  }
+
+  .wheel-gallery-section {
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    overflow: hidden;
+  }
+
+  .works-wheel-section,
+  #worksWheelMount {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    height: min(72svh, 520px) !important;
+    min-height: 340px !important;
+    overflow: hidden !important;
+  }
+
+  .project-grid,
+  .category-grid,
+  .intro,
+  .about-layout,
+  .case-copy,
+  .contact-layout,
+  .case-info {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .project-card,
+  .project-card.wide {
+    grid-column: 1 / -1 !important;
+    min-width: 0;
+  }
+
+  .project-image,
+  .gallery img,
+  .gallery button img {
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 12vw, 3.5rem) !important;
+    line-height: .98 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .page-top {
+    padding-top: 105px !important;
+  }
+
+  .case-info {
+    gap: 14px !important;
+  }
+
+  .lightbox {
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .lightbox img {
+    max-width: 100% !important;
+    max-height: 82svh !important;
+    object-fit: contain;
+  }
+
+  /* Keep interactive controls comfortable to tap without altering actions. */
+  button,
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: 390px) {
+  .topbar {
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  .brand-line-1 {
+    font-size: .82rem !important;
+  }
+
+  .hero-content-panel {
+    left: 5.5vw !important;
+    width: 89vw !important;
+  }
+
+  .hero-title-line {
+    font-size: clamp(3.25rem, 17.6vw, 4.45rem) !important;
+  }
+
+  .split-panel-left,
+  .split-panel-right {
+    padding-left: 1.15rem !important;
+    padding-right: 1.15rem !important;
+  }
+
+  .contact-slide-section {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
