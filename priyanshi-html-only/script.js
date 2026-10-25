@@ -99,7 +99,9 @@ function initWorksWheel() {
   function getMetrics() {
     const w = stage.clientWidth || mount.clientWidth || window.innerWidth || 1200;
     const h = stage.clientHeight || mount.clientHeight || 820;
-    const cardW = Math.min(h * CARD_H * CARD_RATIO, w * CARD_MAX_W);
+    // Keep desktop geometry unchanged; widen the active card proportionally on phone-sized viewports.
+    const cardMaxW = window.matchMedia("(max-width: 767px)").matches ? 0.70 : CARD_MAX_W;
+    const cardW = Math.min(h * CARD_H * CARD_RATIO, w * cardMaxW);
     const cardH = cardW / CARD_RATIO;
     const drumR = cardH * DRUM;
     const ringR = cardH * RING_R;
