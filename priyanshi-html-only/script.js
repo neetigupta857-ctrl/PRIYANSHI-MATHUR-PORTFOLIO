@@ -2,6 +2,41 @@ function initWorksWheel() {
   const mount = document.getElementById("worksWheelMount");
   if (!mount) return;
 
+  // Use a conventional, image-first project list on phones instead of the desktop 3D wheel.
+  // This branch only runs at phone widths; the original desktop interaction stays intact.
+  if (window.matchMedia("(max-width: 767px)").matches) {
+    const phoneProjects = (typeof window.projects !== "undefined" && Array.isArray(window.projects))
+      ? window.projects.filter(p => p.categoryKey === "visualisation")
+      : ((typeof projects !== "undefined" && Array.isArray(projects))
+        ? projects.filter(p => p.categoryKey === "visualisation") : []);
+    const rawBase = "https://raw.githubusercontent.com/neetigupta857-ctrl/PRIYANSHI-MATHUR-PORTFOLIO/main/priyanshi-html-only/";
+    mount.innerHTML = `<div class="mobile-project-gallery" aria-label="Selected 3D visualisation projects">
+      ${phoneProjects.map((p, i) => {
+        const source = rawBase + p.image;
+        const thumbnail = "https://wsrv.nl/?url=" + encodeURIComponent(source) + "&w=1000&h=700&fit=cover&output=webp&q=78";
+        const num = String(i + 1).padStart(2, "0");
+        return `
+          <article class="mobile-project-card">
+            <a class="mobile-project-link" href="#project/${p.id}" data-project="${p.id}" aria-label="Explore ${p.title}">
+              <div class="mobile-project-image">
+                <img src="${thumbnail}" data-original-src="${p.image}" alt="${p.title}" loading="${i === 0 ? "eager" : "lazy"}" decoding="async" ${i === 0 ? 'fetchpriority="high"' : ""} onerror="this.onerror=null;this.src=this.dataset.originalSrc;">
+                <span class="mobile-project-index">${num} / SELECTED WORK</span>
+                <span class="mobile-project-arrow" aria-hidden="true">↗</span>
+              </div>
+              <div class="mobile-project-copy">
+                <span class="mobile-project-category">ARCHITECTURAL CGI · ${num}</span>
+                <h3>${p.title}</h3>
+                <span class="mobile-project-cta">Explore case study <span aria-hidden="true">→</span></span>
+              </div>
+            </a>
+          </article>`;
+      }).join("")}
+    </div>`;
+    const hint = document.querySelector(".wheel-hint");
+    if (hint) hint.textContent = "Tap a project to view its images and case study.";
+    return;
+  }
+
   // Geometry: tuned for large, immersive, unboxed presence
   const CARD_H = 0.46;
   const CARD_MAX_W = 0.42;
@@ -1004,5 +1039,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-
+/* Swap the PDF-cover collage for a single optimised architectural image on phones only. */
+(function applyPhoneHeroImage() {
+  const hero = document.querySelector("#pdfCover .hero-bg-img");
+  if (!hero) return;
+  const desktopSrc = hero.getAttribute("src");
+  const rawHero = "https://raw.githubusercontent.com/neetigupta857-ctrl/PRIYANSHI-MATHUR-PORTFOLIO/main/priyanshi-html-only/RENDERS/SUITE ROOM/1.jpg";
+  const phoneSrc = "https://wsrv.nl/?url=" + encodeURIComponent(rawHero) + "&w=1100&h=1700&fit=cover&output=webp&q=80";
+  const apply = () => {
+    const isPhone = window.matchMedia("(max-width: 767px)").matches;
+    const wanted = isPhone ? phoneSrc : desktopSrc;
+    if (hero.getAttribute("src") !== wanted) hero.setAttribute("src", wanted);
+  };
+  apply();
+  window.addEventListener("resize", apply, { passive: true });
+})();
