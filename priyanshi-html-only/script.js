@@ -41,7 +41,7 @@ function initWorksWheel() {
   const items = rawItems.map(p => {
     let imgPath = p.image || (p.images && p.images[0]) || "";
     // Use ultra-fast web-optimized thumb if present in directory
-    const thumbPath = imgPath.replace(/1\.jpg$/i, "thumb.jpg");
+    const thumbPath = p.thumbnail || imgPath;
     return {
       title: p.title,
       image: thumbPath,
@@ -66,7 +66,7 @@ function initWorksWheel() {
         ${items.map((item, i) => `
           <a id="works-wheel-${i}" class="works-wheel-card" href="${item.href}" data-project="${rawItems[i] ? rawItems[i].id : ''}" role="option" aria-selected="${i === 0}">
             <span class="works-wheel-card-inner">
-              <img src="${item.image}" alt="${item.title}" draggable="false" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async" />
+              <img src="${item.image}" data-original-src="${item.fullImage}" alt="${item.title}" draggable="false" loading="${i < 2 ? 'eager' : 'lazy'}" decoding="async" onerror="this.onerror=null;this.src=this.dataset.originalSrc;" />
               <span class="works-wheel-card-action">
                 <svg viewBox="0 0 12 12" class="works-wheel-svg" aria-hidden="true">
                   <path d="M3 9 9 3M4 3h5v5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
