@@ -2433,13 +2433,27 @@ a.chroma-card:focus-visible {
   will-change: auto;
 }
 
-.chroma-mono {
-  filter: grayscale(var(--chroma-gray)) brightness(calc(1 - var(--chroma-dim)));
+.chroma-mono,
+.chroma-media img {
+  /* Source artwork must retain its original colour, contrast and opacity. */
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
 }
-.chroma-grid[data-reveal='card'] .chroma-mono { transition: filter 0.24s ease; }
-.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-mono { filter: grayscale(0) brightness(1); }
+.chroma-wash { opacity: 0 !important; }
+.chroma-grid[data-reveal='card'] .chroma-mono { transition: none; }
+.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-mono {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+}
 @media (hover: none) {
-  .chroma-grid[data-reveal='card'] .chroma-mono { filter: grayscale(0) brightness(1); }
+  .chroma-grid[data-reveal='card'] .chroma-mono {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .chroma-grid[data-reveal='card'] .chroma-mono { transition: none; }
@@ -2708,7 +2722,6 @@ a.chroma-card:focus-visible {
     <span class="brand-line-3">LONDON COLLEGE OF ARTS</span>
   </a>
   <div class="topbar-actions">
-    <a href="#portfolio" class="topbar-download-btn" data-page="portfolio">DOWNLOAD PORTFOLIO &gt;</a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Toggle Navigation Menu">
       <div class="menu-btn-burger">
         <span></span>
@@ -2729,7 +2742,6 @@ a.chroma-card:focus-visible {
     <div class="curved-menu-header">
       <p class="curved-menu-header-label">Navigation</p>
       <div class="curved-drawer-actions">
-        <a href="#portfolio" class="curved-drawer-download-btn" data-page="portfolio">DOWNLOAD PORTFOLIO &gt;</a>
         <button type="button" class="curved-drawer-close-btn" id="drawerCloseBtn" aria-label="Close navigation menu">✕</button>
       </div>
     </div>
@@ -3932,6 +3944,7 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 render();
 </script>
+<script src="project-catalog.js"></script>
 <script src="script.js"></script>
 <div id="cursorFollower" class="cursor-follower-container" aria-hidden="true">
   <div class="cursor-follower-dot" id="cursorDot"></div>
