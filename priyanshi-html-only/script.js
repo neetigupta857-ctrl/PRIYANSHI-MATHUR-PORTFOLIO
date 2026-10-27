@@ -40,6 +40,7 @@ function initWorksWheel() {
 
   const items = rawItems.map(p => {
     let imgPath = p.image || (p.images && p.images[0]) || "";
+    imgPath = imgPath.replace(/^\/?renders\//i, "RENDERS/");
     // Use ultra-fast web-optimized thumb if present in directory
     const thumbPath = imgPath.replace(/1\.jpg$/i, "thumb.jpg");
     return {
