@@ -2433,13 +2433,29 @@ a.chroma-card:focus-visible {
   will-change: auto;
 }
 
-.chroma-mono {
-  filter: grayscale(var(--chroma-gray)) brightness(calc(1 - var(--chroma-dim)));
+.chroma-mono,
+.chroma-media img,
+.gallery img,
+.project-image img,
+.works-wheel-card-inner img {
+  /* Preserve the original project artwork — never apply the monochrome/x-ray treatment. */
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
 }
-.chroma-grid[data-reveal='card'] .chroma-mono { transition: filter 0.24s ease; }
-.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-mono { filter: grayscale(0) brightness(1); }
+.chroma-grid[data-reveal='card'] .chroma-mono { transition: none; }
+.chroma-grid[data-reveal='card'] .chroma-card:hover .chroma-mono {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+}
 @media (hover: none) {
-  .chroma-grid[data-reveal='card'] .chroma-mono { filter: grayscale(0) brightness(1); }
+  .chroma-grid[data-reveal='card'] .chroma-mono {
+    filter: none !important;
+    -webkit-filter: none !important;
+    mix-blend-mode: normal !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .chroma-grid[data-reveal='card'] .chroma-mono { transition: none; }
@@ -3655,12 +3671,11 @@ function indexPage(key) {
       </div>
 
       <!-- ChromaGrid + TiltedCard Hybrid Component: Spotlight Cursor, 3D Physics Tilt, Glare & Parallax Layers -->
-      <div id="interiorChromaGrid" class="chroma-grid" data-reveal="card" style="--chroma-cols: 3; --chroma-min: 240px; --chroma-gap: 24px; --chroma-r: 280px; --chroma-gray: 1; --chroma-dim: 0.12; --chroma-glow: 0.55; --chroma-border: 1; --chroma-fade: 0.6s; --chroma-ratio: 16 / 10; --chroma-radius: 14px;">
+      <div id="interiorChromaGrid" class="chroma-grid" data-reveal="spotlight" style="--chroma-cols: 3; --chroma-min: 240px; --chroma-gap: 24px; --chroma-r: 280px; --chroma-gray: 0; --chroma-dim: 0; --chroma-glow: 0.55; --chroma-border: 1; --chroma-fade: 0.6s; --chroma-ratio: 16 / 10; --chroma-radius: 14px;">
         <div class="chroma-grid-inner">
           ${arr.map((p, i) => {
             const accents = ["#800020", "#b85d19", "#2a6f97", "#3d5a80", "#6b705c", "#7f4f24", "#936639", "#a53860", "#4f772d", "#b07d62", "#8c1c13", "#415a77", "#588157"];
             const accent = accents[i % accents.length];
-            const thumbnail = `https://wsrv.nl/?url=${encodeURIComponent(`https://raw.githubusercontent.com/neetigupta857-ctrl/PRIYANSHI-MATHUR-PORTFOLIO/main/priyanshi-html-only/${p.image}`)}&w=640&h=400&fit=cover&output=webp&q=72`;
             return `
             <figure class="tilted-card" data-interactive="" data-tc-index="${i}" style="width: 100%; height: auto; perspective: 800px; margin: 0;">
               <div class="tilted-card__body" style="--tc-radius: 14px; --tc-glare-rgb: 255, 255, 255; width: 100%; height: auto;">
@@ -3668,7 +3683,7 @@ function indexPage(key) {
                   <a class="chroma-card" data-chroma-area="" href="#project/${p.id}" data-project="${p.id}" style="--chroma-accent: ${accent}; width: 100%; height: 100%;" role="link" aria-label="View ${esc(p.title)} study">
                     <span class="chroma-wash" aria-hidden="true"></span>
                     <div class="chroma-media" data-chroma-area="">
-                      <img class="chroma-mono" src="${thumbnail}" data-original-src="${p.image}" onerror="this.onerror=null;this.src=this.dataset.originalSrc;" alt="${esc(p.title)}" loading="lazy" decoding="async" fetchpriority="low" width="400" height="250" style="width: 100%; height: 100%; aspect-ratio: 16 / 10; object-fit: cover;">
+                      <img class="chroma-mono" src="${p.image}" alt="${esc(p.title)}" loading="lazy" decoding="async" fetchpriority="low" width="400" height="250" style="width: 100%; height: 100%; aspect-ratio: 16 / 10; object-fit: cover;">
                       <span class="chroma-media-rim" aria-hidden="true"></span>
                     </div>
                     <div class="chroma-info">
@@ -3773,7 +3788,12 @@ function render() {
     if (page === "visualisation" && typeof initWorksWheel === "function") {
       setTimeout(initWorksWheel, 40);
     }
-    // Keep the archive grid CSS-driven to avoid per-card animation loops and scroll observers.
+    if (page === "interior" && typeof initChromaGrid === "function") {
+      setTimeout(() => initChromaGrid({ reveal: "spotlight" }), 40);
+    }
+    if (page === "interior" && typeof initTiltedCards === "function") {
+      setTimeout(initTiltedCards, 40);
+    }
   } else if (page === "portfolio") {
     view.innerHTML = portfolio();
   } else {
@@ -3946,6 +3966,14 @@ if (typeof initMagnet === "function") {
 }
 if (typeof initCursorFollower === "function") {
   setTimeout(initCursorFollower, 20);
+}
+const initialRoute = (location.hash || "").replace(/^#\/?/, "");
+if ((initialRoute === "interior" || initialRoute === "interior-design") &&
+    typeof initChromaGrid === "function" && typeof initTiltedCards === "function") {
+  setTimeout(() => {
+    initChromaGrid({ reveal: "spotlight" });
+    initTiltedCards();
+  }, 40);
 }
 </script>
 </body>
