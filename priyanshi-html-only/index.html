@@ -2713,6 +2713,43 @@ a.chroma-card:focus-visible {
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+/* Chroma Grid: keep the real component visible and project artwork in its original colours. */
+#interiorChromaGrid {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+#interiorChromaGrid .chroma-grid-inner {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  gap: var(--chroma-gap, 24px) !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+#interiorChromaGrid .tilted-card,
+#interiorChromaGrid .tilted-card__body,
+#interiorChromaGrid .tilted-card__face,
+#interiorChromaGrid .chroma-card {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+#interiorChromaGrid .chroma-mono,
+#interiorChromaGrid .chroma-media img,
+#view .gallery img,
+#view .project-image img,
+#view .works-wheel-card-inner img {
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+}
+#interiorChromaGrid .chroma-media img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
 </style>
   <link rel="stylesheet" href="mobile.css" media="screen">
 </head>
@@ -2724,7 +2761,6 @@ a.chroma-card:focus-visible {
     <span class="brand-line-3">LONDON COLLEGE OF ARTS</span>
   </a>
   <div class="topbar-actions">
-    <a href="#portfolio" class="topbar-download-btn" data-page="portfolio">DOWNLOAD PORTFOLIO &gt;</a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Toggle Navigation Menu">
       <div class="menu-btn-burger">
         <span></span>
@@ -2745,7 +2781,6 @@ a.chroma-card:focus-visible {
     <div class="curved-menu-header">
       <p class="curved-menu-header-label">Navigation</p>
       <div class="curved-drawer-actions">
-        <a href="#portfolio" class="curved-drawer-download-btn" data-page="portfolio">DOWNLOAD PORTFOLIO &gt;</a>
         <button type="button" class="curved-drawer-close-btn" id="drawerCloseBtn" aria-label="Close navigation menu">✕</button>
       </div>
     </div>
@@ -3683,7 +3718,7 @@ function indexPage(key) {
                   <a class="chroma-card" data-chroma-area="" href="#project/${p.id}" data-project="${p.id}" style="--chroma-accent: ${accent}; width: 100%; height: 100%;" role="link" aria-label="View ${esc(p.title)} study">
                     <span class="chroma-wash" aria-hidden="true"></span>
                     <div class="chroma-media" data-chroma-area="">
-                      <img class="chroma-mono" src="${p.image}" alt="${esc(p.title)}" loading="lazy" decoding="async" fetchpriority="low" width="400" height="250" style="width: 100%; height: 100%; aspect-ratio: 16 / 10; object-fit: cover;">
+                      <img class="chroma-mono" src="/${p.image}" alt="${esc(p.title)}" loading="lazy" decoding="async" fetchpriority="low" width="400" height="250" style="width: 100%; height: 100%; aspect-ratio: 16 / 10; object-fit: cover;">
                       <span class="chroma-media-rim" aria-hidden="true"></span>
                     </div>
                     <div class="chroma-info">
@@ -3706,7 +3741,7 @@ function indexPage(key) {
 }
 
 function casePage(id){let p=projects.find(x=>x.id===id)||projects[0];return `<div class="case-hero" style="--unused:0"><div><div class="eyebrow">${esc(p.category)} / Case study</div><h1>${esc(p.title)}</h1><p>${esc(p.type)}</p></div></div><div class="case-info">${[["Project type",p.type],["Location",p.location],["Year",p.year],["Role",p.role]].map(x=>`<div><label>${x[0]}</label><span>${esc(x[1])}</span></div>`).join("")}</div><section><div class="case-copy"><div><div class="eyebrow">01 / Project overview</div><h2>A study in material, light and space.</h2></div><div><p>${esc(p.description)}</p><p><strong style="color:var(--sand)">Brief / challenge</strong><br>${esc(p.brief)}</p><p><strong style="color:var(--sand)">Concept & development</strong><br>${esc(p.concept)}</p><p><strong style="color:var(--sand)">Material direction</strong><br>${esc(p.materials)}</p><p><strong style="color:var(--sand)">Software</strong><br>${esc(p.software)}</p><p class="notice">This portfolio PDF presents these as design and reference studies. Project authorship and software are not assumed beyond what is stated in the source.</p></div></div></section><section><div class="section-head"><div><div class="eyebrow">02 / Visual gallery</div><h2>Details in <em>context.</em></h2></div><p>Selected pages and visuals from the supplied portfolio PDF.</p></div><div class="gallery">${p.images.map((n,i)=>`<button type="button" data-lightbox="${n}" aria-label="Expand ${esc(p.title)} image ${i+1}">${img(n,p.title+" visual "+(i+1))}</button>`).join("")}</div></section><section><div class="actions">${projects[(projects.indexOf(p)+projects.length-1)%projects.length] ? `<a class="text-link" href="#project/${projects[(projects.indexOf(p)+projects.length-1)%projects.length].id}" data-project-link="${projects[(projects.indexOf(p)+projects.length-1)%projects.length].id}">← Previous project</a>`:""}<a class="text-link" href="#visualisation" data-page="visualisation">Back to projects ↗</a><a class="text-link" href="#project/${projects[(projects.indexOf(p)+1)%projects.length].id}" data-project-link="${projects[(projects.indexOf(p)+1)%projects.length].id}">Next project →</a></div></section>`}
-function contact(){return `${pageTop("Let’s connect","Good work begins with <em>a conversation.</em>","Available for junior interior design and architectural visualisation opportunities in Dubai. Open to virtual interviews and relocation.")}<section><div class="contact-layout"><div><div class="eyebrow">Direct contact</div><div class="contact-details"><a href="mailto:priyamathur2700@gmail.com">priyamathur2700@gmail.com</a><br><a href="https://www.linkedin.com/in/priyamat9625" target="_blank" rel="noreferrer">LinkedIn ↗</a></div><p class="contact-note">Based in India · Open to opportunities in Dubai · Available for virtual interviews and relocation.</p><a class="btn" href="#portfolio" data-page="portfolio">Download Portfolio / CV ↗</a><p class="notice">Before launch, replace the portfolio download placeholder with a hosted PDF path.</p></div><form class="form" id="contactForm"><label>Name<input name="name" autocomplete="name" required minlength="2" placeholder="Your name"></label><label>Email<input type="email" name="email" autocomplete="email" required placeholder="you@company.com"></label><label>Company<input name="company" autocomplete="organization" placeholder="Studio or organisation"></label><label>Message<textarea name="message" required minlength="10" placeholder="Tell me a little about the opportunity..."></textarea></label><button class="btn primary" type="submit">Prepare enquiry ↗</button><div class="form-status" id="formStatus" aria-live="polite"></div><p class="notice">Preview form: validates your message and opens your email app. A server endpoint can be connected for production.</p></form></div></section>`}
+function contact(){return `${pageTop("Let’s connect","Good work begins with <em>a conversation.</em>","Available for junior interior design and architectural visualisation opportunities in Dubai. Open to virtual interviews and relocation.")}<section><div class="contact-layout"><div><div class="eyebrow">Direct contact</div><div class="contact-details"><a href="mailto:priyamathur2700@gmail.com">priyamathur2700@gmail.com</a><br><a href="https://www.linkedin.com/in/priyamat9625" target="_blank" rel="noreferrer">LinkedIn ↗</a></div><p class="contact-note">Based in India · Open to opportunities in Dubai · Available for virtual interviews and relocation.</p></div><form class="form" id="contactForm"><label>Name<input name="name" autocomplete="name" required minlength="2" placeholder="Your name"></label><label>Email<input type="email" name="email" autocomplete="email" required placeholder="you@company.com"></label><label>Company<input name="company" autocomplete="organization" placeholder="Studio or organisation"></label><label>Message<textarea name="message" required minlength="10" placeholder="Tell me a little about the opportunity..."></textarea></label><button class="btn primary" type="submit">Prepare enquiry ↗</button><div class="form-status" id="formStatus" aria-live="polite"></div><p class="notice">Preview form: validates your message and opens your email app. A server endpoint can be connected for production.</p></form></div></section>`}
 function initAboutAnimations() {
   if (typeof gsap !== "undefined") {
     if (typeof ScrollTrigger !== "undefined") {
