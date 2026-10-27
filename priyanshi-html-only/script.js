@@ -352,7 +352,7 @@ function initChromaGrid(options = {}) {
 
   const place = () => {
     const box = root.getBoundingClientRect();
-    root.querySelectorAll(".chroma-media[data-chroma-area]").forEach((node) => {
+    root.querySelectorAll("[data-chroma-area]").forEach((node) => {
       const rect = node.getBoundingClientRect();
       node.style.setProperty("--chroma-ox", `${rect.left - box.left}px`);
       node.style.setProperty("--chroma-oy", `${rect.top - box.top}px`);
