@@ -3762,7 +3762,15 @@ function indexPage(key) {
     </article>`;
   }
 
-  const imageItems = arr.flatMap(project => (project.images || []).map(image => ({ image })));
+  const imageItems = [
+    { image: "CAPITAL/priyanshi_assignment_14_pdf_0.jpg" },
+    { image: "CAPITAL/priyanshi_assignment_14__model___pdf_0.jpg" },
+    { image: "CAPITAL/assignment19.webp" },
+    { image: "CAPITAL/assignment20.webp" },
+    { image: "CAPITAL/assignment21.webp" },
+    ...Array.from({ length: 19 }, (_, index) => ({ image: `CAPITAL/priyanshi_assignment_23_pdf_${index}.jpg` })),
+    ...Array.from({ length: 22 }, (_, index) => ({ image: `CAPITAL/priyanshi_assignment_24__pdf_${index}.jpg` }))
+  ];
   return `
   <article class="monograph-page-article monograph-interior-article" aria-label="Interior Design Image Gallery">
     <section class="monograph-page-body capital-gallery-body">
