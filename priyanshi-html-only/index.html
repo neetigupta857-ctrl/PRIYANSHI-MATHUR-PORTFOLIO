@@ -2750,6 +2750,85 @@ a.chroma-card:focus-visible {
   height: 100% !important;
   object-fit: cover !important;
 }
+/* Capital gallery: image-only, same-origin files, no crops or per-card 3D motion. */
+.capital-gallery-body { padding-top: 10px !important; }
+#interiorChromaGrid.capital-gallery-grid {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  contain: content;
+}
+#interiorChromaGrid.capital-gallery-grid .chroma-grid-inner {
+  display: block !important;
+  columns: 3 280px !important;
+  column-gap: 14px !important;
+}
+#interiorChromaGrid .capital-gallery-tile {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  break-inside: avoid !important;
+  background: #F7F5F0 !important;
+  box-shadow: none !important;
+  text-align: left;
+  cursor: zoom-in;
+  transform: none !important;
+}
+#interiorChromaGrid .capital-gallery-tile .chroma-wash,
+#interiorChromaGrid .capital-gallery-tile .chroma-media-rim,
+#interiorChromaGrid .capital-gallery-tile .chroma-card-rim,
+#interiorChromaGrid .capital-gallery-tile .chroma-card-glow {
+  display: none !important;
+}
+#interiorChromaGrid .capital-gallery-tile .chroma-media {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: hidden;
+  background: #F7F5F0 !important;
+}
+#interiorChromaGrid .capital-gallery-tile img,
+#interiorChromaGrid .capital-gallery-tile .chroma-mono {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+#interiorChromaGrid .capital-gallery-tile:hover img {
+  transform: none !important;
+}
+@media (max-width: 720px) {
+  #interiorChromaGrid.capital-gallery-grid .chroma-grid-inner {
+    columns: 2 190px !important;
+    column-gap: 9px !important;
+  }
+  #interiorChromaGrid .capital-gallery-tile {
+    margin-bottom: 9px !important;
+    border-radius: 7px !important;
+  }
+}
+@media (max-width: 420px) {
+  #interiorChromaGrid.capital-gallery-grid .chroma-grid-inner {
+    columns: 1 !important;
+  }
+}
 </style>
   <link rel="stylesheet" href="mobile.css" media="screen">
 </head>
@@ -3683,61 +3762,28 @@ function indexPage(key) {
     </article>`;
   }
 
+  const imageItems = arr.flatMap(project => (project.images || []).map(image => ({ image })));
   return `
-  <article class="monograph-page-article monograph-interior-article" aria-label="Interior Design &amp; Spatial Planning">
-    <div class="monograph-page-header">
-      <div class="monograph-kicker-line">
-        <span class="monograph-kicker">02 — INTERIOR DESIGN &amp; TECHNICAL DRAFTING</span>
-        <span class="monograph-kicker-hairline"></span>
-      </div>
-      <h1 class="monograph-page-title">Drafting, geometry &amp; <em>space.</em></h1>
-      <p class="monograph-page-lede">Academic and professional technical drafting assignments, descriptive geometry studies, construction detailing, and spatial planning coursework sourced exclusively from authentic project archives at Capital Education, Dubai.</p>
-    </div>
-
-    <section class="monograph-page-body">
-      <div class="monograph-filter-band">
-        <div class="filter-band-left">
-          <span class="filter-spec-tag">ACADEMIC &amp; STUDIO ARCHIVE / CAPITAL</span>
-          <span class="filter-count">CURATED ASSIGNMENTS &amp; DRAFTING SHEETS</span>
-        </div>
-        <div class="filter-band-right">
-          <span class="filter-source-note">Technical Drafting · Geometry · Spatial Planning · Capital Education, Dubai</span>
-        </div>
-      </div>
-
-      <!-- ChromaGrid + TiltedCard Hybrid Component: Spotlight Cursor, 3D Physics Tilt, Glare & Parallax Layers -->
-      <div id="interiorChromaGrid" class="chroma-grid" data-reveal="spotlight" style="--chroma-cols: 3; --chroma-min: 240px; --chroma-gap: 24px; --chroma-r: 280px; --chroma-gray: 0; --chroma-dim: 0; --chroma-glow: 0.55; --chroma-border: 1; --chroma-fade: 0.6s; --chroma-ratio: 16 / 10; --chroma-radius: 14px;">
+  <article class="monograph-page-article monograph-interior-article" aria-label="Interior Design Image Gallery">
+    <section class="monograph-page-body capital-gallery-body">
+      <div id="interiorChromaGrid" class="chroma-grid capital-gallery-grid" data-reveal="spotlight" style="--chroma-cols: 3; --chroma-gap: 14px; --chroma-gray: 0; --chroma-dim: 0; --chroma-glow: 0.18; --chroma-border: 0; --chroma-fade: 0.2s; --chroma-radius: 10px;">
         <div class="chroma-grid-inner">
-          ${arr.map((p, i) => {
-            const accents = ["#800020", "#b85d19", "#2a6f97", "#3d5a80", "#6b705c", "#7f4f24", "#936639", "#a53860", "#4f772d", "#b07d62", "#8c1c13", "#415a77", "#588157"];
-            const accent = accents[i % accents.length];
-            return `
-            <figure class="tilted-card" data-interactive="" data-tc-index="${i}" style="width: 100%; height: auto; perspective: 800px; margin: 0;">
-              <div class="tilted-card__body" style="--tc-radius: 14px; --tc-glare-rgb: 255, 255, 255; width: 100%; height: auto;">
-                <div class="tilted-card__face tilted-card__front" style="position: relative; width: 100%; height: auto;">
-                  <a class="chroma-card" data-chroma-area="" href="#project/${p.id}" data-project="${p.id}" style="--chroma-accent: ${accent}; width: 100%; height: 100%;" role="link" aria-label="View ${esc(p.title)} study">
-                    <span class="chroma-wash" aria-hidden="true"></span>
-                    <div class="chroma-media" data-chroma-area="">
-                      <img class="chroma-mono" src="/${p.image}" alt="${esc(p.title)}" loading="lazy" decoding="async" fetchpriority="low" width="400" height="250" style="width: 100%; height: 100%; aspect-ratio: 16 / 10; object-fit: cover;">
-                      <span class="chroma-media-rim" aria-hidden="true"></span>
-                    </div>
-                    <div class="chroma-info">
-                      <span class="chroma-title">${esc(p.title)}</span>
-                    </div>
-                    <span class="chroma-card-rim" aria-hidden="true"></span>
-                    <span class="chroma-card-glow" aria-hidden="true"></span>
-                  </a>
-                  <span class="tilted-card__glare" aria-hidden="true"></span>
-                  <span class="tilted-card__rim" aria-hidden="true"></span>
-                  <span class="tilted-card__edge" aria-hidden="true"></span>
-                </div>
+          ${imageItems.map((item, i) => `
+            <button class="capital-gallery-tile chroma-card" type="button" data-lightbox="/${esc(item.image)}" aria-label="Open image ${i + 1}">
+              <span class="chroma-wash" aria-hidden="true"></span>
+              <div class="chroma-media" data-chroma-area="">
+                <img class="chroma-mono" src="/${esc(item.image)}" alt="" loading="lazy" decoding="async" fetchpriority="low">
+                <span class="chroma-media-rim" aria-hidden="true"></span>
               </div>
-            </figure>`;
-          }).join("")}
+              <span class="chroma-card-rim" aria-hidden="true"></span>
+              <span class="chroma-card-glow" aria-hidden="true"></span>
+            </button>
+          `).join("")}
         </div>
       </div>
     </section>
   </article>`;
+}
 }
 
 function casePage(id){let p=projects.find(x=>x.id===id)||projects[0];return `<div class="case-hero" style="--unused:0"><div><div class="eyebrow">${esc(p.category)} / Case study</div><h1>${esc(p.title)}</h1><p>${esc(p.type)}</p></div></div><div class="case-info">${[["Project type",p.type],["Location",p.location],["Year",p.year],["Role",p.role]].map(x=>`<div><label>${x[0]}</label><span>${esc(x[1])}</span></div>`).join("")}</div><section><div class="case-copy"><div><div class="eyebrow">01 / Project overview</div><h2>A study in material, light and space.</h2></div><div><p>${esc(p.description)}</p><p><strong style="color:var(--sand)">Brief / challenge</strong><br>${esc(p.brief)}</p><p><strong style="color:var(--sand)">Concept & development</strong><br>${esc(p.concept)}</p><p><strong style="color:var(--sand)">Material direction</strong><br>${esc(p.materials)}</p><p><strong style="color:var(--sand)">Software</strong><br>${esc(p.software)}</p><p class="notice">This portfolio PDF presents these as design and reference studies. Project authorship and software are not assumed beyond what is stated in the source.</p></div></div></section><section><div class="section-head"><div><div class="eyebrow">02 / Visual gallery</div><h2>Details in <em>context.</em></h2></div><p>Selected pages and visuals from the supplied portfolio PDF.</p></div><div class="gallery">${p.images.map((n,i)=>`<button type="button" data-lightbox="${n}" aria-label="Expand ${esc(p.title)} image ${i+1}">${img(n,p.title+" visual "+(i+1))}</button>`).join("")}</div></section><section><div class="actions">${projects[(projects.indexOf(p)+projects.length-1)%projects.length] ? `<a class="text-link" href="#project/${projects[(projects.indexOf(p)+projects.length-1)%projects.length].id}" data-project-link="${projects[(projects.indexOf(p)+projects.length-1)%projects.length].id}">← Previous project</a>`:""}<a class="text-link" href="#visualisation" data-page="visualisation">Back to projects ↗</a><a class="text-link" href="#project/${projects[(projects.indexOf(p)+1)%projects.length].id}" data-project-link="${projects[(projects.indexOf(p)+1)%projects.length].id}">Next project →</a></div></section>`}
@@ -3826,9 +3872,7 @@ function render() {
     if (page === "interior" && typeof initChromaGrid === "function") {
       setTimeout(() => initChromaGrid({ reveal: "spotlight" }), 40);
     }
-    if (page === "interior" && typeof initTiltedCards === "function") {
-      setTimeout(initTiltedCards, 40);
-    }
+    // Keep this image gallery CSS-driven for smooth scrolling; no per-card spring loop.
   } else if (page === "portfolio") {
     view.innerHTML = portfolio();
   } else {
@@ -4004,11 +4048,8 @@ if (typeof initCursorFollower === "function") {
 }
 const initialRoute = (location.hash || "").replace(/^#\/?/, "");
 if ((initialRoute === "interior" || initialRoute === "interior-design") &&
-    typeof initChromaGrid === "function" && typeof initTiltedCards === "function") {
-  setTimeout(() => {
-    initChromaGrid({ reveal: "spotlight" });
-    initTiltedCards();
-  }, 40);
+    typeof initChromaGrid === "function") {
+  setTimeout(() => initChromaGrid({ reveal: "spotlight" }), 40);
 }
 </script>
 </body>
