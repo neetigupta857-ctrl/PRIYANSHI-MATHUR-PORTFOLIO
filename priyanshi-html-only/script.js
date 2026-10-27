@@ -313,8 +313,13 @@ function initWorksWheel() {
    ======================================================== */
 function initChromaGrid(options = {}) {
   const root = document.getElementById("interiorChromaGrid") || document.querySelector(".chroma-grid");
-  if (!root) return;
+  if (!root || root.dataset.chromaInitialized === "true") return;
 
+  if (typeof window.__activeChromaGridCleanup === "function") {
+    window.__activeChromaGridCleanup();
+  }
+
+  root.dataset.chromaInitialized = "true";
   const config = {
     damping: options.damping ?? 0.45,
     fadeOut: options.fadeOut ?? 0.6,
@@ -323,8 +328,6 @@ function initChromaGrid(options = {}) {
   };
 
   const clamp = (val, min, max) => Math.min(max, Math.max(min, val));
-
-  // Generate radial falloff gradient stops matching React Bits component
   const falloffStops = (softness) => {
     const core = clamp(1 - softness, 0, 0.95);
     const stops = [];
@@ -342,11 +345,14 @@ function initChromaGrid(options = {}) {
   const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
   const state = { x: 0, y: 0, tx: 0, ty: 0, power: 0, target: 0, primed: false };
   let raf = 0;
+  let placeRaf = 0;
   let last = 0;
+  let resizeObserver = null;
+  let cleaned = false;
 
   const place = () => {
     const box = root.getBoundingClientRect();
-    root.querySelectorAll("[data-chroma-area]").forEach((node) => {
+    root.querySelectorAll(".chroma-media[data-chroma-area]").forEach((node) => {
       const rect = node.getBoundingClientRect();
       node.style.setProperty("--chroma-ox", `${rect.left - box.left}px`);
       node.style.setProperty("--chroma-oy", `${rect.top - box.top}px`);
@@ -355,16 +361,14 @@ function initChromaGrid(options = {}) {
 
   const frame = (now) => {
     raf = 0;
+    if (cleaned) return;
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
     last = now;
-
     const follow = reduce ? 1 : 1 - Math.exp(-dt / Math.max(0.01, config.damping * 0.32));
     state.x += (state.tx - state.x) * follow;
     state.y += (state.ty - state.y) * follow;
-
     const span = state.target > state.power ? 0.1 : Math.max(0.02, config.fadeOut * 0.35);
     state.power += (state.target - state.power) * (reduce ? 1 : 1 - Math.exp(-dt / span));
-
     root.style.setProperty("--chroma-x", `${state.x.toFixed(2)}px`);
     root.style.setProperty("--chroma-y", `${state.y.toFixed(2)}px`);
     root.style.setProperty("--chroma-power", state.power.toFixed(4));
@@ -373,7 +377,6 @@ function initChromaGrid(options = {}) {
       Math.abs(state.tx - state.x) < 0.1 &&
       Math.abs(state.ty - state.y) < 0.1 &&
       Math.abs(state.target - state.power) < 0.002;
-
     if (settled) {
       state.power = state.target;
       root.style.setProperty("--chroma-power", state.power.toFixed(4));
@@ -384,7 +387,7 @@ function initChromaGrid(options = {}) {
   };
 
   const wake = () => {
-    if (!raf) raf = requestAnimationFrame(frame);
+    if (!cleaned && !raf) raf = requestAnimationFrame(frame);
   };
 
   let cachedRootBox = null;
@@ -392,12 +395,7 @@ function initChromaGrid(options = {}) {
     if (!cachedRootBox) cachedRootBox = root.getBoundingClientRect();
     return cachedRootBox;
   };
-
-  const invalidateChromaBox = () => {
-    cachedRootBox = null;
-  };
-
-  window.addEventListener("scroll", invalidateChromaBox, { passive: true });
+  const invalidateChromaBox = () => { cachedRootBox = null; };
 
   const onMove = (event) => {
     if (!config.spotlight) return;
@@ -418,27 +416,50 @@ function initChromaGrid(options = {}) {
     wake();
   };
 
-  let placeTimeout = 0;
   const debouncedPlace = () => {
     invalidateChromaBox();
-    if (placeTimeout) cancelAnimationFrame(placeTimeout);
-    placeTimeout = requestAnimationFrame(place);
+    if (placeRaf) cancelAnimationFrame(placeRaf);
+    placeRaf = requestAnimationFrame(() => {
+      placeRaf = 0;
+      if (!cleaned) place();
+    });
   };
 
   if (window.ResizeObserver) {
-    const resizeObserver = new ResizeObserver(debouncedPlace);
+    resizeObserver = new ResizeObserver(debouncedPlace);
     resizeObserver.observe(root);
   } else {
     window.addEventListener("resize", debouncedPlace, { passive: true });
   }
 
+  window.addEventListener("scroll", invalidateChromaBox, { passive: true });
   root.addEventListener("pointermove", onMove, { passive: true });
   root.addEventListener("pointerdown", onMove, { passive: true });
   root.addEventListener("pointerleave", onLeave, { passive: true });
   root.addEventListener("pointercancel", onLeave, { passive: true });
 
+  const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
+    if (raf) cancelAnimationFrame(raf);
+    if (placeRaf) cancelAnimationFrame(placeRaf);
+    if (resizeObserver) resizeObserver.disconnect();
+    else window.removeEventListener("resize", debouncedPlace);
+    window.removeEventListener("scroll", invalidateChromaBox);
+    root.removeEventListener("pointermove", onMove);
+    root.removeEventListener("pointerdown", onMove);
+    root.removeEventListener("pointerleave", onLeave);
+    root.removeEventListener("pointercancel", onLeave);
+    delete root.dataset.chromaInitialized;
+    if (window.__activeChromaGridCleanup === cleanup) window.__activeChromaGridCleanup = null;
+  };
+
+  window.__activeChromaGridCleanup = cleanup;
   place();
-  setTimeout(place, 100);
+  placeRaf = requestAnimationFrame(() => {
+    placeRaf = 0;
+    if (!cleaned) place();
+  });
 }
 
 /* ========================================================

@@ -3611,7 +3611,7 @@ function indexPage(key) {
               <div class="tilted-card__shadow" aria-hidden="true" style="border-radius: 14px;"></div>
               <div class="tilted-card__body" style="--tc-radius: 14px; --tc-glare-rgb: 255, 255, 255; width: 100%; height: auto;">
                 <div class="tilted-card__face tilted-card__front" style="position: relative; width: 100%; height: auto;">
-                  <a class="chroma-card" data-chroma-area="" href="#project/${p.id}" data-project="${p.id}" style="--chroma-accent: ${accent}; width: 100%; height: 100%;" role="link" aria-label="View ${esc(p.title)} study">
+                  <a class="chroma-card" href="#project/${p.id}" data-project="${p.id}" style="--chroma-accent: ${accent}; width: 100%; height: 100%;" role="link" aria-label="View ${esc(p.title)} study">
                     <span class="chroma-wash" aria-hidden="true"></span>
                     <div class="chroma-media" data-chroma-area="">
                       <img class="chroma-mono" src="${p.image}" alt="${esc(p.title)}" loading="lazy" decoding="async" width="400" height="250" style="width: 100%; height: 100%; aspect-ratio: 16 / 10; object-fit: cover;">
@@ -3699,6 +3699,10 @@ function render() {
   const isContactTarget = page === "contact" || page === "contactSlideSection";
   if (isContactTarget) page = "home";
 
+  if (page !== "interior" && typeof window.__activeChromaGridCleanup === "function") {
+    window.__activeChromaGridCleanup();
+  }
+
   let view = document.getElementById("view");
   let footer = document.getElementById("siteFooter");
   const isHome = page === "home";
@@ -3722,9 +3726,6 @@ function render() {
     }
     if (page === "interior" && typeof initChromaGrid === "function") {
       setTimeout(initChromaGrid, 40);
-    }
-    if (page === "interior" && typeof initTiltedCards === "function") {
-      setTimeout(initTiltedCards, 40);
     }
   } else if (page === "portfolio") {
     view.innerHTML = portfolio();
